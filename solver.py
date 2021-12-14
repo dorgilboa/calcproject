@@ -44,45 +44,6 @@ def evaluate_expression(expression_string):
     else:
         print(syntax_msg)
         return None
-    # if is_syntax_valid:
-    #     expression_stack, seperate_msg = seperate_expression(expression_string, operators_dict)
-    #     if expression_stack:
-    #         parenthesis, p_index = extract_parenthesis(expression_stack)
-    #         while parenthesis is not None:
-    #             calculation = try_to_calc(parenthesis, operators_dict)
-    #             while calculation[0]:
-    #                 try:
-    #                     parenthesis.insert(calculation[2], calculation[1])
-    #                     calculation = try_to_calc(parenthesis, operators_dict)
-    #                 except:
-    #                     break
-    #             if check_for_calc_error(calculation, expression_stack, p_index) == "no valid":
-    #                 return ""
-    #             parenthesis, p_index = extract_parenthesis(expression_stack)
-    #         calculation = try_to_calc(expression_stack,operators_dict)
-    #         while calculation[0]:
-    #             try:
-    #                 expression_stack.insert(calculation[2], calculation[1])
-    #                 calculation = try_to_calc(expression_stack, operators_dict)
-    #             except:
-    #                 print("too high")
-    #                 break
-    #         if calculation[2] == "no operator to check on.":
-    #             can_return_val = check_for_calc_error(calculation, expression_stack)
-    #             if type(can_return_val) == str:
-    #                 return can_return_val
-    #             else:
-    #                 return expression_stack[0]
-    #         else:
-    #             can_return_val = check_for_calc_error(calculation, expression_stack)
-    #             if type(can_return_val) == str:
-    #                 return can_return_val
-    #             else:
-    #                 return ""
-    #     else:
-    #         print(seperate_msg)
-    # else:
-    #     print(syntax_msg)
 
 
 def is_calc_fail(calculation, expr_stack, index=0):
