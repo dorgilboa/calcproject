@@ -151,12 +151,10 @@ def add_closure(expr_string, index, is_opener):
             expr_string = expr_string[:i] + ')' + expr_string[i:]
     else:
         dig_cnt = 0
-        found_opener = False
         while i < len(expr_string) and (
                     expr_string[i].isdigit() or expr_string[i] == '.' or expr_string[i] == '-' or expr_string[
             i] == '('):
             if expr_string[i] == '(':
-                found_opener = True
                 expr_string = add_closure(expr_string, index + 1, True)
                 return expr_string
             if dig_cnt != 0 and expr_string[i] == '-':
@@ -190,7 +188,6 @@ def arithmetic_val(str_stack, oprtor_index, oprtor_dict):
         if oprtor_index is None and len(str_stack) == 1:
             raise Exception("no operator to check on")
         elif oprtor_index is None and len(str_stack) != 1:
-            print("ERROR: " + str(str_stack[0]) + " " + str(str_stack[1]) + ", This is not a valid expression..")
             return False, "none"
         if oprtor_dict[str_stack[oprtor_index]][2] == "lr":
             return from_left(str_stack, oprtor_index, True) and from_right(str_stack, oprtor_index, True), "lr"
