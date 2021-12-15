@@ -14,9 +14,12 @@ def get_expr():
     try:
         print("--------------------")
         expression_input = str(input("Please enter an expression\n<for exit - type e>\nENTER HERE: "))
+        expression_input = expression_input.replace(" ", "")
+        expression_input = expression_input.replace("\t", "")
         if expression_input == "":
             raise Exception("Error - No data has been received from user.")
         detect_lang(expression_input)
+        return expression_input
     except EOFError as eofe:
         print("Error - Closed \'stdin\' file from keyboard without data in it, run the code again.")
     except Exception as err:

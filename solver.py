@@ -9,8 +9,6 @@ def evaluate_expression(expression_string):
     """
     temp = Calculator('~', -1)
     operators_dict = temp.oprtor_dict
-    expression_string = expression_string.replace(" ", "")
-    expression_string = expression_string.replace("\t", "")
     is_syntax_valid, syntax_msg = syntax_val(expression_string, operators_dict)
     if is_syntax_valid:
         expr_stack = to_stack(expression_string, operators_dict)
