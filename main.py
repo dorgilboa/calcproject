@@ -5,7 +5,9 @@ def main():
     expression_input = get_expr()
     while expression_input != "e":
         if expression_input != "":
-            print("ANSWER: " + str(evaluate_expression(expression_input)))
+            expr_result = evaluate_expression(expression_input)
+            if expr_result:
+                print("ANSWER: " + str(expr_result))
         expression_input = get_expr()
 
 def get_expr():
