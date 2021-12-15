@@ -8,9 +8,11 @@ def fact(oprnd1, oprnd2=None):
             for i in range(2, int(oprnd1) + 1):
                 res *= i
             return float(res)
-        print("factorial of " + str(oprnd1) + " is not possible")
-    except OverflowError as err:
-        print(err)
+        raise Exception("factorial of " + str(oprnd1) + " is not possible")
+    except OverflowError as err1:
+        print(err1)
+    except Exception as err2:
+        print(err2)
 
 
 def switch_sign(oprnd1, oprnd2=None):

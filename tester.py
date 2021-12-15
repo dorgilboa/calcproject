@@ -90,7 +90,7 @@ def to_stack(expr_string, oprtors_dict):
             # now tempstr is a number -> i had changed, or '-' -> i had changed, or '' -> i had changed if appended (-1*
         if curr_i == index and curr_i < len(expr_string):
             expr_stack.append(expr_string[curr_i])
-        index+=1
+        index += 1
     return expr_stack
 
 
@@ -108,25 +108,26 @@ def treat_minuses(expr_string, index, expr_stack, oprtors_dict):
     minustr = ""
     # sign minuses:
     if index == 0 or not (expr_string[index - 1].isdigit() or expr_string[index - 1] == ')' or (
-        expr_string[index - 1] in oprtors_dict.keys() and oprtors_dict[expr_string[index - 1]][2] == 'ln')):
+                    expr_string[index - 1] in oprtors_dict.keys() and oprtors_dict[expr_string[index - 1]][2] == 'ln')):
         while expr_string[index] == '-':
             minustr += expr_string[index]
-            index+=1
+            index += 1
     # sign minuses before brackets or tilda and so...
     if len(minustr) != 0:
-        if (expr_string[index] in oprtors_dict.keys() and oprtors_dict[expr_string[index]][2] == 'nr') or expr_string[index] == '(':
+        if (expr_string[index] in oprtors_dict.keys() and oprtors_dict[expr_string[index]][2] == 'nr') or expr_string[
+            index] == '(':
             if len(minustr) % 2 != 0:
                 expr_stack.append('(')
                 expr_stack.append(float(-1.0))
                 expr_stack.append('*')
                 if expr_string[index] == '(':
-                    expr_string = add_closure(expr_string,index+1, True)
+                    expr_string = add_closure(expr_string, index + 1, True)
                 elif expr_string[index] in oprtors_dict.keys() and oprtors_dict[expr_string[index]][2] == 'nr':
-                    if expr_string[index+1] == '(':
-                        expr_string = add_closure(expr_string, index+1, True)
+                    if expr_string[index + 1] == '(':
+                        expr_string = add_closure(expr_string, index + 1, True)
                     else:
-                        expr_string =  add_closure(expr_string, index+1, False)
-                    # minus_brack = True
+                        expr_string = add_closure(expr_string, index + 1, False)
+                        # minus_brack = True
             expr_stack.append(expr_string[index])
             return "", index, expr_string
         if len(minustr) % 2 != 0:
@@ -140,29 +141,31 @@ def add_closure(expr_string, index, is_opener):
         opened = 1
         while opened and i < len(expr_string):
             if expr_string[i] == '(':
-                opened+=1
+                opened += 1
             if expr_string[i] == ')':
-                opened -=1
-            i+=1
+                opened -= 1
+            i += 1
         if i == len(expr_string):
-            expr_string+= ')'
+            expr_string += ')'
         else:
             expr_string = expr_string[:i] + ')' + expr_string[i:]
     else:
         dig_cnt = 0
         found_opener = False
-        while i < len(expr_string) and (expr_string[i].isdigit() or expr_string[i] == '.' or expr_string[i] == '-' or expr_string[i] == '('):
+        while i < len(expr_string) and (
+                    expr_string[i].isdigit() or expr_string[i] == '.' or expr_string[i] == '-' or expr_string[
+            i] == '('):
             if expr_string[i] == '(':
                 found_opener = True
-                expr_string = add_closure(expr_string, index+1, True)
+                expr_string = add_closure(expr_string, index + 1, True)
                 return expr_string
             if dig_cnt != 0 and expr_string[i] == '-':
                 break
             if expr_string[i].isdigit():
-                dig_cnt+=1
-            i+=1
+                dig_cnt += 1
+            i += 1
         if dig_cnt == 0:
-            print("Error - No operand after given operator: \'" + str(expr_string[index-1]) + "\'")
+            print("Error - No operand after given operator: \'" + str(expr_string[index - 1]) + "\'")
         else:
             expr_string = expr_string[:i] + ')' + expr_string[i:]
     return expr_string
@@ -201,12 +204,15 @@ def arithmetic_val(str_stack, oprtor_index, oprtor_dict):
 
 def from_left(str_stack, oprtor_index, necessary=False):
     if oprtor_index >= 1:
+        if not necessary:
+            if isinstance(str_stack[oprtor_index - 1], float):
+                print("ERROR - " + "\'" + str(str_stack[oprtor_index - 1])
+                      + "\'" + " cannot be before the the given operator: " + str(str_stack[oprtor_index]))
+                return False
         if not isinstance(str_stack[oprtor_index - 1], float):
             if necessary:
-                print(str("ERROR - " + "\'" +
-                          str_stack[
-                              oprtor_index - 1]) + "\'" + " is not a valid operand for the given operator: " + str(
-                    str_stack[oprtor_index]))
+                print("ERROR - " + "\'" + str(str_stack[oprtor_index - 1]) + "\'" +
+                      " is not a valid operand for the given operator: " + str(str_stack[oprtor_index]))
             return False
         else:
             return True
@@ -218,12 +224,15 @@ def from_left(str_stack, oprtor_index, necessary=False):
 
 def from_right(str_stack, oprtor_index, necessary=False):
     try:
+        if not necessary:
+            if isinstance(str_stack[oprtor_index + 1], float):
+                print("ERROR - " + "\'" + str(str_stack[oprtor_index + 1])
+                      + "\'" + " cannot be before the the given operator: " + str(str_stack[oprtor_index]))
+                return False
         if not isinstance(str_stack[oprtor_index + 1], float) or isinstance(str_stack[oprtor_index + 1], int):
             if necessary:
-                print(str("ERROR - " + "\'" +
-                          str_stack[
-                              oprtor_index + 1]) + "\'" + " is not a valid operand for the given operator: " + str(
-                    str_stack[oprtor_index]))
+                print("ERROR - " + "\'" + str(str_stack[oprtor_index + 1]) + "\'" +
+                      " is not a valid operand for the given operator: " + str(str_stack[oprtor_index]))
             return False
         else:
             return True

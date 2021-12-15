@@ -72,7 +72,6 @@ def extract_parenthesis(str_stack):
 def calc(stack, oprtor_dict):
     index_to_inset = 0
     curr_oprtor_index = strongest_operator_index(stack, oprtor_dict)
-    # try:
     can_calc, sides = arithmetic_val(stack, curr_oprtor_index, oprtor_dict)
     if can_calc:
         if sides == "lr":
@@ -92,17 +91,30 @@ def calc(stack, oprtor_dict):
             stack.pop(curr_oprtor_index)
             stack.pop(curr_oprtor_index)
             index_to_inset = curr_oprtor_index
-        return True, calculation.get_result(), index_to_inset
+        result = calculation.get_result()
+        if result:
+            return True, result, index_to_inset
+        else:
+            return False, result, sides
     if stack:
         return False, stack[0], sides
     else:
         return False, "ERROR - no operand was given", sides
-    # except:
-    #     return False, None, None
+
 
 
 def main():
-    print(evaluate_expression(input("Please Enter Your'e expression here: ")))
+    string = []
+    while True:
+        char = 97
+        string.append(chr(char))
+        for j in range(len(string)-1,-1,-1):
+            char = 97
+            while char < 102:
+                string[j] = chr(char)
+                print(string)
+                char += 1
+
 
 
 if __name__ == '__main__':
