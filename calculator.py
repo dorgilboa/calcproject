@@ -86,9 +86,13 @@ def mini(oprnd1, oprnd2):
 
 def modu(oprnd1, oprnd2):
     try:
+        if oprnd2 == 0:
+            raise ZeroDivisionError("Error - Divide by 0 while calculating modulu (\'%\').")
         return oprnd1 % oprnd2
-    except OverflowError as err:
-        print(err)
+    except OverflowError as err1:
+        print(err1)
+    except ZeroDivisionError as err2:
+        print(err2)
 
 
 class Calculator(object):
