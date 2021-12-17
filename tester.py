@@ -1,4 +1,14 @@
 def syntax_val(expr_string, oprtor_dict):
+    """
+    :param expr_string: The main expression that the user had inserted
+    that sent from main to calculate.
+    :param oprtor_dict: A dictionary from the calculator module that contains
+    the operators as a key. each key has a list as a value that contains the
+    significance of its key, the function that calculates according to it and
+    the sides the operator gets operands from.
+    :return: True or False if the expression is valid by syntax. Checks for
+    letters, misplaced dots and brackets.
+    """
     invalid_chars = ""
     for char in expr_string:
         if char not in oprtor_dict.keys() and not char.isdigit() and not char == '.' \
@@ -22,6 +32,13 @@ def syntax_val(expr_string, oprtor_dict):
 
 
 def brackets_val(expr_string):
+    """
+    :param expr_string: The main expression that the user had inserted
+    that sent from main to calculate.
+    :return: False if there are parentheses that were written
+    in a wrong way: with nothing between them, with one remains open
+    and so... returns True for the opposite case.
+    """
     close_p = 0
     open_p = 0
     between = -1
@@ -45,6 +62,13 @@ def brackets_val(expr_string):
 
 
 def dots_val(expr_string):
+    """
+    :param expr_string: The main expression that the user had inserted
+    that sent from main to calculate.
+    :return: False if there are dots that were written in a wrong way:
+    with no digit before or with no digit after. If all of the dots in
+    the expression are a part of a valid number - x.x - it'll return True.
+    """
     try:
         for index in range(len(expr_string)):
             if expr_string[index] == '.':
@@ -58,6 +82,16 @@ def dots_val(expr_string):
 
 
 def operators_val(expr_string, oprtors_dict):
+    """
+    :param expr_string: The main expression that the user had inserted
+    that sent from main to calculate.
+    :param oprtors_dict: A dictionary from the calculator module that contains
+    the operators as a key. each key has a list as a value that contains the
+    significance of its key, the function that calculates according to it and
+    the sides the operator gets operands from.
+    :return: True if all of the operators that are at the end or start of the
+    expression are placed in a valid way, otherwise it'll return False.
+    """
     index = 0
     expr_len = len(expr_string)
     while index < expr_len:
@@ -74,6 +108,16 @@ def operators_val(expr_string, oprtors_dict):
 
 
 def to_stack(expr_string, oprtors_dict):
+    """
+    :param expr_string: The main expression that the user had inserted
+    that sent from main to calculate.
+    :param oprtors_dict: A dictionary from the calculator module that contains
+    the operators as a key. each key has a list as a value that contains the
+    significance of its key, the function that calculates according to it and
+    the sides the operator gets operands from.
+    :return: A stack that contains all of the string expression components:
+    numbers, operators, parenthesis.
+    """
     expr_stack = []
     index = 0
     expr_len = len(expr_string)
@@ -95,16 +139,38 @@ def to_stack(expr_string, oprtors_dict):
 
 
 def convert_to_number(str_number):
+    """
+    :param str_number: A part from the original expression string that might
+    contain a number (might has minus, dot, and must have digits).
+    :return: A conversion of the string expression to a float-type number, None
+    if the conversion cannot be done.
+    """
     try:
         if str_number[0] == '.' or str_number[-1] == '.':
             raise ValueError("Not full number defining.")
         return float(str_number)
     except ValueError:
-        print(str(str_number) + " conversion to number cannot be done.")
+        print("Error: " + str(str_number) + " conversion to number cannot be done.")
         return None
 
 
 def treat_minuses(expr_string, index, expr_stack, oprtors_dict):
+    """
+    :param expr_string: The main expression that the user had inserted
+    that sent from main to calculate.
+    :param index: the current index of the string that the main loop in the to_stack
+    method sent to this method in order to extract and treat all minus cases.
+    :param expr_stack: the stack that contains the expression while calculating
+    it, divided by two types - string and float (operators or brackets and operands).
+    :param oprtors_dict: A dictionary from the calculator module that contains
+    the operators as a key. each key has a list as a value that contains the
+    significance of its key, the function that calculates according to it and
+    the sides the operator gets operands from.
+    :return: it returns back the smallest amount of minuses the given expression
+    represents, or add to the main stack (-1* in order to take care of special cases.
+    It also returns the index's change while activating this function and a fixed
+    expression string.
+    """
     minustr = ""
     # sign minuses:
     if index == 0 or not (expr_string[index - 1].isdigit() or expr_string[index - 1] == ')' or (
@@ -136,6 +202,19 @@ def treat_minuses(expr_string, index, expr_stack, oprtors_dict):
 
 
 def add_closure(expr_string, index, is_opener):
+    """
+    :param expr_string: The main expression that the user had inserted
+    that sent from main to calculate.
+    :param index: the current index of the string that the function treat_minuses
+    gave in order to treat this specific case when a minus comes before brackets or
+    before an operator that receives operands only from its right side.
+    :param is_opener: A flag that if its value is True - the given case is an opener
+    parenthesis after a minus, and if it is False - it is the other case - an operator
+    that takes operands only from its right side.
+    :return: The function returns a re-written main expression string with a closure
+    bracket, right after the treat_minuses function added to the expression '(-1*', in
+    order to keep the expression valid.
+    """
     i = index
     if is_opener:
         opened = 1
@@ -169,71 +248,99 @@ def add_closure(expr_string, index, is_opener):
     return expr_string
 
 
-def strongest_operator_index(str_stack, oprtor_dict):
+def strongest_operator_index(stack, oprtor_dict):
+    """
+    :param stack: The main (or bracket) stack the program runs on, divided
+    by two types - string and float (operators and operands).
+    :param oprtor_dict: A dictionary from the calculator module that contains
+    the operators as a key. each key has a list as a value that contains the
+    significance of its key, the function that calculates according to it and
+    the sides the operator gets operands from.
+    :return: The index of the first most significant operator there is from
+    the given stack.
+    """
     max_index = None
     max_power = 0
-    for item in range(len(str_stack)):
-        if str_stack[item] in oprtor_dict.keys():
-            curr_power = oprtor_dict[str_stack[item]][0]
-            if curr_power == 6:
-                return item
+    for item in range(len(stack)):
+        if stack[item] in oprtor_dict.keys():
+            curr_power = oprtor_dict[stack[item]][0]
             if max_power < curr_power:
                 max_index = item
                 max_power = curr_power
     return max_index
 
 
-def arithmetic_val(str_stack, oprtor_index, oprtor_dict):
+def arithmetic_val(stack, oprtor_index, oprtor_dict):
+    """
+    :param stack: The main (or bracket) stack the program runs on, divided
+    by two types - string and float (operators and operands).
+    :param oprtor_index: The index of an operator (if there is any) in a given
+    stack.
+    :param oprtor_dict: A dictionary from the calculator module that contains
+    the operators as a key. each key has a list as a value that contains the
+    significance of its key, the function that calculates according to it and
+    the sides the operator gets operands from.
+    :return: True or False if the expression is mathematically right or not -
+    if from both left and right of the operator's index its conditions are true
+    ot false. It also returns a string flag that can be important for the rest
+    of the script's run.
+    """
     try:
-        if oprtor_index is None and len(str_stack) == 1:
+        if oprtor_index is None and len(stack) == 1:
             raise Exception("no operator to check on")
-        elif oprtor_index is None and len(str_stack) != 1:
+        elif oprtor_index is None and len(stack) != 1:
             return False, "none"
-        if oprtor_dict[str_stack[oprtor_index]][2] == "lr":
-            return from_left(str_stack, oprtor_index, True) and from_right(str_stack, oprtor_index, True), "lr"
-        if oprtor_dict[str_stack[oprtor_index]][2] == "ln":
-            return from_left(str_stack, oprtor_index, True) and not from_right(str_stack, oprtor_index), "ln"
-        if oprtor_dict[str_stack[oprtor_index]][2] == "nr":
-            return not from_left(str_stack, oprtor_index) and from_right(str_stack, oprtor_index, True), "nr"
+        if oprtor_dict[stack[oprtor_index]][2] == "lr":
+            return from_left(stack, oprtor_index, True) and from_right(stack, oprtor_index, True), "lr"
+        if oprtor_dict[stack[oprtor_index]][2] == "ln":
+            return from_left(stack, oprtor_index, True) and not from_right(stack, oprtor_index), "ln"
+        if oprtor_dict[stack[oprtor_index]][2] == "nr":
+            return not from_left(stack, oprtor_index) and from_right(stack, oprtor_index, True), "nr"
     except:
         return False, "no operator to check on."
 
 
-def from_left(str_stack, oprtor_index, necessary=False):
+def from_left(stack, oprtor_index, necessary=False):
+    """
+    :param stack:
+    :param oprtor_index:
+    :param necessary:
+    :return:
+    """
     if oprtor_index >= 1:
         if not necessary:
-            if isinstance(str_stack[oprtor_index - 1], float):
-                print("ERROR - " + "\'" + str(str_stack[oprtor_index - 1])
-                      + "\'" + " cannot be before the the given operator: " + str(str_stack[oprtor_index]))
+            if isinstance(stack[oprtor_index - 1], float):
+                print("ERROR - " + "\'" + str(stack[oprtor_index - 1])
+                      + "\'" + " cannot be before the the given operator: " + str(stack[oprtor_index]))
                 return False
-        if not isinstance(str_stack[oprtor_index - 1], float):
+        if not isinstance(stack[oprtor_index - 1], float):
             if necessary:
-                print("ERROR - " + "\'" + str(str_stack[oprtor_index - 1]) + "\'" +
-                      " is not a valid operand for the given operator: " + str(str_stack[oprtor_index]))
+                print("ERROR - " + "\'" + str(stack[oprtor_index - 1]) + "\'" +
+                      " is not a valid operand for the given operator: " + str(stack[oprtor_index]))
             return False
         else:
             return True
     else:
         if necessary:
-            print("ERROR - There is no operand before the given operator: " + str(str_stack[oprtor_index]))
+            print("ERROR - There is no operand before the given operator: " + str(stack[oprtor_index]))
         return False
 
 
-def from_right(str_stack, oprtor_index, necessary=False):
+def from_right(stack, oprtor_index, necessary=False):
     try:
         if not necessary:
-            if isinstance(str_stack[oprtor_index + 1], float):
-                print("ERROR - " + "\'" + str(str_stack[oprtor_index + 1])
-                      + "\'" + " cannot be before the the given operator: " + str(str_stack[oprtor_index]))
+            if isinstance(stack[oprtor_index + 1], float):
+                print("ERROR - " + "\'" + str(stack[oprtor_index + 1])
+                      + "\'" + " cannot be before the the given operator: " + str(stack[oprtor_index]))
                 return False
-        if not isinstance(str_stack[oprtor_index + 1], float) or isinstance(str_stack[oprtor_index + 1], int):
+        if not isinstance(stack[oprtor_index + 1], float) or isinstance(stack[oprtor_index + 1], int):
             if necessary:
-                print("ERROR - " + "\'" + str(str_stack[oprtor_index + 1]) + "\'" +
-                      " is not a valid operand for the given operator: " + str(str_stack[oprtor_index]))
+                print("ERROR - " + "\'" + str(stack[oprtor_index + 1]) + "\'" +
+                      " is not a valid operand for the given operator: " + str(stack[oprtor_index]))
             return False
         else:
             return True
     except IndexError:
         if necessary:
-            print("ERROR - There is no operand after the given operator: " + str(str_stack[oprtor_index]))
+            print("ERROR - There is no operand after the given operator: " + str(stack[oprtor_index]))
         return False
