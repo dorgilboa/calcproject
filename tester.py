@@ -351,7 +351,7 @@ def from_right(stack, oprtor_index, necessary=False):
         if not necessary:
             if isinstance(stack[oprtor_index + 1], float):
                 print("ERROR - " + "\'" + str(stack[oprtor_index + 1])
-                      + "\'" + " cannot be before the the given operator: " + str(stack[oprtor_index]))
+                      + "\'" + " cannot be after the the given operator: " + str(stack[oprtor_index]))
                 return False
         if not isinstance(stack[oprtor_index + 1], float) or isinstance(stack[oprtor_index + 1], int):
             if necessary:
