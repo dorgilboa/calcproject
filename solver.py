@@ -12,6 +12,9 @@ def evaluate_expression(expression_string):
     """
     temp = Calculator('~', -1)
     operators_dict = temp.oprtor_dict
+    expression_string = input_val(expression_string)
+    if expression_string == ' ':
+        return None
     is_syntax_valid, syntax_msg = syntax_val(expression_string, operators_dict)
     if is_syntax_valid:
         expr_stack = to_stack(expression_string, operators_dict)
@@ -120,7 +123,7 @@ def calc(stack, oprtor_dict):
             stack.pop(curr_oprtor_index)
             index_to_inset = curr_oprtor_index
         result = calculation.get_result()
-        if result:
+        if result is not None:
             return True, result, index_to_inset
         else:
             return False, result, sides
@@ -128,22 +131,3 @@ def calc(stack, oprtor_dict):
         return False, stack[0], sides
     else:
         return False, "ERROR - no operand was given", sides
-
-
-
-def main():
-    string = []
-    while True:
-        char = 97
-        string.append(chr(char))
-        for j in range(len(string)-1,-1,-1):
-            char = 97
-            while char < 102:
-                string[j] = chr(char)
-                print(string)
-                char += 1
-
-
-
-if __name__ == '__main__':
-    main()

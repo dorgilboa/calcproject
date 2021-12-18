@@ -1,3 +1,23 @@
+def input_val(expression_input):
+    try:
+        expression_input = expression_input.replace(" ", "")
+        expression_input = expression_input.replace("\t", "")
+        if expression_input == "":
+            raise Exception("Error - No data has been received from user.")
+        detect_lang(expression_input)
+        return expression_input
+    except Exception as err:
+        print(err)
+        return " "
+
+
+def detect_lang(expression):
+    for char in expression:
+        asc = ord(char)
+        if asc < 0 or asc >= 256:
+            raise Exception("Error - Unsupported language had been detected try to use a default ENG keyboard.")
+
+
 def syntax_val(expr_string, oprtor_dict):
     """
     :param expr_string: The main expression that the user had inserted
@@ -234,7 +254,7 @@ def add_closure(expr_string, index, is_opener):
                     expr_string[i].isdigit() or expr_string[i] == '.' or expr_string[i] == '-' or expr_string[
             i] == '('):
             if expr_string[i] == '(':
-                expr_string = add_closure(expr_string, index + 1, True)
+                expr_string = add_closure(expr_string, i + 1, True)
                 return expr_string
             if dig_cnt != 0 and expr_string[i] == '-':
                 break
