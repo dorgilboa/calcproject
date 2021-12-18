@@ -55,6 +55,6 @@ def test_evaluate_expression():
     assert evaluate_expression("(123123 . 123 / 123.123) /(3-1+-2)") == False
     assert evaluate_expression("5!(12---~-1*3.2/(1+3))+20") == False
     assert evaluate_expression("5!(12---~-1*3.2/(1+3))/0") == False
-    
+
 
 test_evaluate_expression()

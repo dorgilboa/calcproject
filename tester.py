@@ -322,10 +322,14 @@ def arithmetic_val(stack, oprtor_index, oprtor_dict):
 
 def from_left(stack, oprtor_index, necessary=False):
     """
-    :param stack:
-    :param oprtor_index:
-    :param necessary:
-    :return:
+    :param stack: The main (or bracket) stack the program runs on, divided
+    by two types - string and float (operators and operands).
+    :param oprtor_index: The index of an operator in a given stack.
+    :param necessary: Boolean flag to tell if the side we are checking is
+    a part of the calculation process or just for arithmetical check.
+    :return: True if from this side of the operator in the stack there is
+    an operand. False if it is at the start of the stack or if there is no
+    float type varriable on the left side.
     """
     if oprtor_index >= 1:
         if not necessary:
@@ -347,6 +351,16 @@ def from_left(stack, oprtor_index, necessary=False):
 
 
 def from_right(stack, oprtor_index, necessary=False):
+    """
+    :param stack: The main (or bracket) stack the program runs on, divided
+    by two types - string and float (operators and operands).
+    :param oprtor_index: The index of an operator in a given stack.
+    :param necessary: Boolean flag to tell if the side we are checking is
+    a part of the calculation process or just for arithmetical check.
+    :return: True if from this side of the operator in the stack there is
+    an operand. False if it is at the end of the stack or if there is no
+    float type varriable on the right side.
+    """
     try:
         if not necessary:
             if isinstance(stack[oprtor_index + 1], float):
