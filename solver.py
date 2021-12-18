@@ -14,7 +14,7 @@ def evaluate_expression(expression_string):
     operators_dict = temp.oprtor_dict
     expression_string = input_val(expression_string)
     if expression_string == ' ':
-        return None
+        return False
     is_syntax_valid, syntax_msg = syntax_val(expression_string, operators_dict)
     if is_syntax_valid:
         expr_stack = to_stack(expression_string, operators_dict)
@@ -29,7 +29,7 @@ def evaluate_expression(expression_string):
                     print(err)
                     break
             if is_calc_fail(calculation,expr_stack,b_index) == "no valid":
-                return None
+                return False
             bracket, b_index = extract_parenthesis(expr_stack)
         calculation = calc(expr_stack, operators_dict)
         while calculation[0]:
@@ -45,9 +45,11 @@ def evaluate_expression(expression_string):
                 return val_return
             else:
                 return expr_stack[0]
+        else:
+            return False
     else:
         print(syntax_msg)
-        return None
+        return False
 
 
 def is_calc_fail(calculation, expr_stack, index=0):

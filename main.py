@@ -6,7 +6,7 @@ def main():
     while expression_input is not None and expression_input != "e":
         if expression_input is not None:
             expr_result = evaluate_expression(expression_input)
-            if expr_result is not None:
+            if type(expr_result) == float:
                 print("ANSWER: " + str(expr_result))
         expression_input = get_expr()
 

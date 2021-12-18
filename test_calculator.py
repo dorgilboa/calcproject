@@ -1,17 +1,16 @@
-from solver import *
 import pytest
-
+from solver import *
 
 def test_evaluate_expression():
-    assert evaluate_expression("3*^2") is None
-    assert evaluate_expression("1+") is None
-    assert evaluate_expression("5!(2+3)") is None
-    assert evaluate_expression("4-~~5") is None
-    assert evaluate_expression("*5/4") is None
+    assert evaluate_expression("3*^2") == False
+    assert evaluate_expression("1+") == False
+    assert evaluate_expression("5!(2+3)") == False
+    assert evaluate_expression("4-~~5") == False
+    assert evaluate_expression("*5/4") == False
 
-    assert evaluate_expression("ahuefla") is None
+    assert evaluate_expression("ahuefla") == False
 
-    assert evaluate_expression("  \t  \t") is None
+    assert evaluate_expression("  \t  \t") == False
 
     assert evaluate_expression("7+ 3+1+-3") == 8.0
     assert evaluate_expression("8-2---5-1") == 0.0
@@ -21,16 +20,16 @@ def test_evaluate_expression():
     assert evaluate_expression("(12*2) @2") == 13.0
     assert evaluate_expression("8$-5") == 8.0
     assert evaluate_expression("8&-5") == -5.0
-    assert evaluate_expression("8%5") == 5.0
+    assert evaluate_expression("8%5") == 3.0
     assert evaluate_expression("~ --15") == -15.0
     assert evaluate_expression("3!!") == 720.0
     assert evaluate_expression("~-(-5)") == -5.0
     assert evaluate_expression("4*-~-1") == -4.0
     assert evaluate_expression("-~12@13") == 12.5
     assert evaluate_expression("7/-7") == -1.0
-    assert evaluate_expression("-1!") is None
-    assert evaluate_expression("-8^0.5") is None
-    assert evaluate_expression("6%0") is None
+    assert evaluate_expression("-1!") == False
+    assert evaluate_expression("-8^0.5") == False
+    assert evaluate_expression("6%0") == False
 
     assert evaluate_expression("1  ^2*(5 +2^ (3-1))*(2+ 3) +2^3  *2") == 61.0
     assert evaluate_expression("-(-(-(-~-(3*-4*(2--1)))))+1") == -35.0
@@ -53,6 +52,8 @@ def test_evaluate_expression():
     assert evaluate_expression("~-(5--7*14. 2-(12^0.5))*(3^3)") == 2725.2692563912806
     assert evaluate_expression("123123 . 123 / 123.123 *(3-1+-2)") == 0.0
     assert evaluate_expression("(123123 . 123 / 123.123) ^(3-1+-2)") == 1.0
-    assert evaluate_expression("(123123 . 123 / 123.123) /(3-1+-2)") is None
-    assert evaluate_expression("5!(12---~-1*3.2/(1+3))+20") is None
-    assert evaluate_expression("5!(12---~-1*3.2/(1+3))/0") is None
+    assert evaluate_expression("(123123 . 123 / 123.123) /(3-1+-2)") == False
+    assert evaluate_expression("5!(12---~-1*3.2/(1+3))+20") == False
+    assert evaluate_expression("5!(12---~-1*3.2/(1+3))/0") == False
+
+test_evaluate_expression()
