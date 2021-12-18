@@ -9,6 +9,8 @@ def main():
     In order to use the console app correctly - run this file. To see the
     usage of the pytest - go to 'test_calculator.py' file. All functions
     are documented.
+    This project is under python version - 3.7.4 and is fully written with
+    python.
     """
     expression_input = get_expr()
     while expression_input is not None and expression_input != "e":
